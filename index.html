@@ -557,12 +557,18 @@
     }
 
     /* ════════════════════ SCROLL ANIMATIONS ════════════════════ */
+    /* 默认内容全部可见；仅当 JS 正常运行（html.js）才启用进场动画，
+       并保证无论如何内容都不会被永久隐藏（见 JS 超时兜底） */
     .reveal {
+      opacity: 1;
+      transform: none;
+    }
+    .js .reveal {
       opacity: 0;
       transform: translateY(30px);
       transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .reveal.visible {
+    .js .reveal.visible {
       opacity: 1;
       transform: translateY(0);
     }
@@ -879,17 +885,32 @@
     });
   });
 
-  /* ── 3. Scroll reveal ── */
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.15 });
+  /* ── 3. Scroll reveal（防呆：任何情况下内容都必须可见） ── */
+  document.documentElement.classList.add('js');
 
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  const revealEls = document.querySelectorAll('.reveal');
+  function revealAll() {
+    revealEls.forEach(function (el) { el.classList.add('visible'); });
+  }
+
+  if ('IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.01, rootMargin: '0px 0px -5% 0px' });
+
+    revealEls.forEach(function (el) { observer.observe(el); });
+
+    // 兜底 1：2 秒后还没全部出来的，强制显示（内容不会永久透明）
+    setTimeout(revealAll, 2000);
+  } else {
+    // 兜底 2：浏览器不支持 IntersectionObserver → 直接全部显示
+    revealAll();
+  }
 
   /* ── 4. Mouse-follow glow on hero ── */
   const hero = document.getElementById('hero');

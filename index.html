@@ -415,6 +415,10 @@
       object-fit: cover;
       display: block;
     }
+    /* 不支持 object-fit 的浏览器：按原比例显示，禁止拉伸 */
+    @supports not (object-fit: cover) {
+      .work-thumb { height: auto; }
+    }
     .work-card::after {
       content: '';
       position: absolute;

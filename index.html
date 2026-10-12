@@ -4,14 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>何梓阳 · 个人主页</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Noto+Sans+SC:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- 使用系统字体，避免 Google Fonts 在国内加载缓慢或失败 -->
   <style>
     /* ════════════════════ RESET & BASE ════════════════════ */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Noto Sans SC', 'Plus Jakarta Sans', system-ui, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
       background: oklch(12% 0.01 260);
       color: oklch(88% 0.01 260);
       line-height: 1.6;
@@ -33,7 +32,7 @@
       --border: oklch(30% 0.01 260);
       --radius: 12px;
       --max-w: 780px;
-      --font-en: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-en: "Segoe UI", -apple-system, system-ui, sans-serif;
     }
 
     /* ════════════════════ TYPE ════════════════════ */
@@ -375,6 +374,134 @@
       transform: translateY(-1px);
     }
 
+    /* ════════════════════ WORKS ════════════════════ */
+    .works-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin: -1.8rem 0 1.6rem;
+    }
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 0.85rem;
+    }
+    .work-card {
+      position: relative;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      background: var(--bg-card);
+      cursor: pointer;
+      aspect-ratio: 9 / 16;
+      transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+    .work-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 28px oklch(60% 0.15 260 / 0.18);
+    }
+    .work-thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .work-card::after {
+      content: '';
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 45%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.78), transparent);
+      pointer-events: none;
+    }
+    .work-play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1.5px solid rgba(255, 255, 255, 0.85);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      padding-left: 3px;
+      transition: background 0.2s ease, transform 0.2s ease;
+      pointer-events: none;
+    }
+    .work-card:hover .work-play {
+      background: var(--accent);
+      transform: translate(-50%, -50%) scale(1.08);
+    }
+    .work-title {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1.4rem 0.6rem 0.55rem;
+      font-size: 0.78rem;
+      color: #fff;
+      text-align: left;
+      z-index: 1;
+      pointer-events: none;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ════════════════════ PLAYER MODAL ════════════════════ */
+    .player-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: rgba(4, 6, 12, 0.88);
+      backdrop-filter: blur(6px);
+    }
+    .player-modal[hidden] { display: none; }
+    .player-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+    #playerVideo {
+      max-height: 80vh;
+      max-width: 92vw;
+      border-radius: 12px;
+      background: #000;
+      display: block;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+    .player-close {
+      position: absolute;
+      top: -2.6rem;
+      right: 0;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--text);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .player-close:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .player-title {
+      margin-top: 0.8rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
     /* ════════════════════ CONTACT ════════════════════ */
     .contact-card {
       background: var(--bg-card);
@@ -443,14 +570,14 @@
   <div class="hero-bg-grid"></div>
   <div class="hero-content">
     <div class="hero-name">何梓阳</div>
-    <div class="hero-tagline">运营 · 策划 · 管理</div>
+    <div class="hero-tagline">新媒体运营 · 短视频剪辑 · 社媒增长</div>
     <p class="hero-desc">
-      3 年运营管理经验，擅长社交媒体运营、活动策划与团队建设。<br>
+      3 年运营与短视频经验，擅长社交媒体运营、视频剪辑与后期制作。<br>
       从 0 到 1 起号，多平台联动推广，用数据驱动增长。
     </p>
     <div class="hero-actions">
-      <a href="#timeline" class="btn btn-primary">查看经历 ↓</a>
-      <a href="#contact" class="btn btn-outline">联系我</a>
+      <a href="#works" class="btn btn-primary">查看作品 ↓</a>
+      <a href="#timeline" class="btn btn-outline">工作经历</a>
     </div>
   </div>
   <div class="scroll-hint">
@@ -491,6 +618,16 @@
   </div>
 </section>
 
+<!-- ╔══════════════════════════ WORKS ═══════════════════════════╗ -->
+<section id="works">
+  <div class="section-inner reveal">
+    <div class="section-label">Portfolio</div>
+    <h2 class="section-title">作品展示</h2>
+    <p class="works-sub">31 个剪辑作品 · 点击封面即可播放</p>
+    <div class="works-grid" id="worksGrid"></div>
+  </div>
+</section>
+
 <!-- ╔══════════════════════════ TIMELINE ═══════════════════════════╗ -->
 <section id="timeline">
   <div class="section-inner reveal">
@@ -505,10 +642,10 @@
           <div class="tl-header">
             <span>
               <span class="tl-company">微亮科技</span>
-              <span class="tl-role"> · 新媒体运营</span>
+              <span class="tl-role"> · 新媒体运营组长</span>
             </span>
             <span>
-              <span class="tl-date">2026.04 – 2026.05</span>
+              <span class="tl-date">2026.03 – 2026.06</span>
               <span class="tl-arrow">▼</span>
             </span>
           </div>
@@ -679,7 +816,7 @@
         <button class="btn-copy" data-copy="1206351510@GMAIL.COM" title="复制邮箱" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:0.8rem;padding:0.2rem 0.4rem;border-radius:4px;transition:background 0.2s;">⎘</button>
       </div>
       <p class="contact-note">
-        目前不在求职状态，但欢迎交流合作 🤝
+        正在寻找新媒体运营 / 短视频剪辑相关工作，欢迎联系 🙌
       </p>
     </div>
   </div>
@@ -689,6 +826,15 @@
 <footer>
   <p>© 2026 何梓阳 · 用 ❤️ 和 ☕ 打造</p>
 </footer>
+
+<!-- ╔══════════════════════════ PLAYER MODAL ═══════════════════════════╗ -->
+<div class="player-modal" id="playerModal" hidden>
+  <div class="player-inner">
+    <button class="player-close" id="playerClose" aria-label="关闭">✕</button>
+    <video id="playerVideo" controls playsinline preload="none"></video>
+    <div class="player-title" id="playerTitle"></div>
+  </div>
+</div>
 
 <!-- ╔══════════════════════════ JAVASCRIPT ═══════════════════════════╗ -->
 <script>
@@ -761,6 +907,59 @@
       }
     });
   });
+
+  /* ── 6. 作品展示墙 ── */
+  const WORKS = [
+    ['w01', 'all梦'], ['w02', 'BE美学'], ['w03', 'MC痴迷'], ['w04', 'q宠关闭'], ['w05', '抽象画画'],
+    ['w06', '大疆侯明昊'], ['w07', '呆呆娱乐·大疆'], ['w08', '蛋蛋'], ['w09', '蛋仔'], ['w10', '帝王蟹'],
+    ['w11', '二科志麻'], ['w12', '格斗游戏'], ['w13', '还不晚娱乐·大疆'], ['w14', '开心钱多多'], ['w15', '喇叭'],
+    ['w16', '陆沉'], ['w17', '美羊羊'], ['w18', '某天成为公主'], ['w19', '奶游星冰乐'], ['w20', '奇思妙想·大疆'],
+    ['w21', '全职猎'], ['w22', '塞巴斯蒂安'], ['w23', '守护甜心'], ['w24', '双子星'], ['w25', '死了都要爱'],
+    ['w26', '我的童年'], ['w27', '小川杠'], ['w28', '锈湖'], ['w29', '猗窝座'], ['w30', '再别冬都'], ['w31', '重力系眼镜男']
+  ];
+
+  const worksGrid = document.getElementById('worksGrid');
+  const modal = document.getElementById('playerModal');
+  const playerVideo = document.getElementById('playerVideo');
+  const playerTitle = document.getElementById('playerTitle');
+
+  function openPlayer(id, title) {
+    playerVideo.src = 'assets/videos/' + id + '.mp4';
+    playerTitle.textContent = title;
+    modal.hidden = false;
+    document.body.style.overflow = 'hidden';
+    const p = playerVideo.play();
+    if (p && p.catch) p.catch(function () {});
+  }
+  function closePlayer() {
+    playerVideo.pause();
+    playerVideo.removeAttribute('src');
+    playerVideo.load();
+    modal.hidden = true;
+    document.body.style.overflow = '';
+  }
+
+  if (worksGrid && modal) {
+    WORKS.forEach(function (item) {
+      const id = item[0], title = item[1];
+      const card = document.createElement('button');
+      card.type = 'button';
+      card.className = 'work-card';
+      card.setAttribute('aria-label', '播放 ' + title);
+      card.innerHTML =
+        '<img class="work-thumb" src="assets/works/' + id + '.jpg" alt="' + title + '" loading="lazy" decoding="async">' +
+        '<span class="work-play" aria-hidden="true">▶</span>' +
+        '<span class="work-title">' + title + '</span>';
+      card.addEventListener('click', function () { openPlayer(id, title); });
+      worksGrid.appendChild(card);
+    });
+
+    document.getElementById('playerClose').addEventListener('click', closePlayer);
+    modal.addEventListener('click', function (e) { if (e.target === modal) closePlayer(); });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) closePlayer();
+    });
+  }
 
 })();
 </script>

@@ -11,25 +11,25 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft YaHei", "PingFang SC", "Hiragino Sans GB", sans-serif;
-      background: oklch(12% 0.01 260);
-      color: oklch(88% 0.01 260);
+      background: #16171d;
+      color: #e3e4ea;
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
-    ::selection { background: oklch(55% 0.15 260 / 0.4); }
+    ::selection { background: rgba(90, 118, 240, 0.4); }
 
     /* ════════════════════ CSS VARIABLES ════════════════════ */
     :root {
-      --bg: oklch(12% 0.01 260);
-      --bg-card: oklch(16% 0.012 260);
-      --bg-card-hover: oklch(20% 0.015 260);
-      --text: oklch(88% 0.01 260);
-      --text-muted: oklch(62% 0.02 260);
-      --accent: oklch(60% 0.15 260);
-      --accent-glow: oklch(60% 0.15 260 / 0.15);
-      --accent-subtle: oklch(60% 0.15 260 / 0.08);
-      --border: oklch(30% 0.01 260);
+      --bg: #16171d;
+      --bg-card: #1d1f26;
+      --bg-card-hover: #242630;
+      --text: #e3e4ea;
+      --text-muted: #9a9ca9;
+      --accent: #5a76f0;
+      --accent-glow: rgba(90, 118, 240, 0.15);
+      --accent-subtle: rgba(90, 118, 240, 0.08);
+      --border: #3a3c45;
       --radius: 12px;
       --max-w: 780px;
       --font-en: "Segoe UI", -apple-system, system-ui, sans-serif;
@@ -56,7 +56,7 @@
       position: absolute;
       width: 600px; height: 600px;
       border-radius: 50%;
-      background: radial-gradient(circle, oklch(50% 0.2 260 / 0.12) 0%, transparent 70%);
+      background: radial-gradient(circle, rgba(72, 100, 250, 0.12) 0%, transparent 70%);
       top: 50%; left: 50%;
       transform: translate(-50%, -50%);
       pointer-events: none;
@@ -66,8 +66,8 @@
     .hero-bg-grid {
       position: absolute; inset: 0;
       background-image:
-        linear-gradient(oklch(60% 0.15 260 / 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, oklch(60% 0.15 260 / 0.03) 1px, transparent 1px);
+        linear-gradient(rgba(90, 118, 240, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(90, 118, 240, 0.03) 1px, transparent 1px);
       background-size: 60px 60px;
       pointer-events: none;
     }
@@ -78,7 +78,7 @@
       font-size: clamp(2.8rem, 8vw, 5rem);
       font-weight: 800;
       letter-spacing: -0.03em;
-      background: linear-gradient(135deg, #fff 30%, oklch(70% 0.12 260) 100%);
+      background: linear-gradient(135deg, #fff 30%, #8ba0f5 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -94,7 +94,7 @@
     .hero-desc {
       max-width: 540px;
       font-size: 0.95rem;
-      color: oklch(70% 0.02 260);
+      color: #b7bac4;
       line-height: 1.7;
       margin-bottom: 2.5rem;
     }
@@ -125,7 +125,7 @@
     }
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 0 40px oklch(60% 0.15 260 / 0.3);
+      box-shadow: 0 0 40px rgba(90, 118, 240, 0.3);
     }
     .btn-outline {
       background: transparent;
@@ -255,7 +255,7 @@
       transition: all 0.25s ease;
     }
     .tl-card:hover {
-      border-color: oklch(40% 0.06 260);
+      border-color: #50546b;
       background: var(--bg-card-hover);
     }
     .tl-header {
@@ -342,7 +342,7 @@
       transition: border-color 0.25s ease;
     }
     .skill-category:hover {
-      border-color: oklch(40% 0.06 260);
+      border-color: #50546b;
     }
     .skill-cat-label {
       font-size: 0.75rem;
@@ -359,7 +359,7 @@
       gap: 0.4rem;
     }
     .skill-tag {
-      background: oklch(25% 0.01 260);
+      background: #2f313b;
       padding: 0.25rem 0.7rem;
       border-radius: 6px;
       font-size: 0.8rem;
@@ -369,7 +369,7 @@
     }
     .skill-tag:hover {
       border-color: var(--accent);
-      background: oklch(28% 0.04 260);
+      background: #353a47;
       color: #fff;
       transform: translateY(-1px);
     }
@@ -380,10 +380,12 @@
       color: var(--text-muted);
       margin: -1.8rem 0 1.6rem;
     }
+    /* 作品区桌面加宽，卡片更大 */
+    #works .section-inner { max-width: 1000px; }
     .works-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 0.85rem;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1rem;
     }
     .work-card {
       position: relative;
@@ -396,10 +398,14 @@
       aspect-ratio: 9 / 16;
       transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
+    /* 老浏览器不支持 aspect-ratio 时给卡片固定高度 */
+    @supports not (aspect-ratio: 1 / 1) {
+      .work-card { height: 300px; }
+    }
     .work-card:hover {
       transform: translateY(-3px);
       border-color: var(--accent);
-      box-shadow: 0 8px 28px oklch(60% 0.15 260 / 0.18);
+      box-shadow: 0 8px 28px rgba(90, 118, 240, 0.18);
     }
     .work-thumb {
       width: 100%;
@@ -533,7 +539,7 @@
     .contact-email:hover { color: var(--accent); }
     .contact-note {
       font-size: 0.8rem;
-      color: oklch(50% 0.02 260);
+      color: #7c7f8c;
       margin-top: 1.5rem;
     }
 
@@ -542,7 +548,7 @@
       text-align: center;
       padding: 3rem 1.5rem;
       font-size: 0.7rem;
-      color: oklch(35% 0.01 260);
+      color: #464851;
     }
 
     /* ════════════════════ SCROLL ANIMATIONS ════════════════════ */
@@ -733,7 +739,7 @@
 
       <!-- Education as timeline node -->
       <div class="tl-item">
-        <div class="tl-dot" style="border-color:oklch(55% 0.08 160);"></div>
+        <div class="tl-dot" style="border-color:#56a08f;"></div>
         <div class="tl-card" data-target="tl-body-edu">
           <div class="tl-header">
             <span>
@@ -741,7 +747,7 @@
               <span class="tl-role"> · 现代流行音乐 · 大专</span>
             </span>
             <span>
-              <span class="tl-date" style="color:oklch(55% 0.08 160);">2021 – 2024</span>
+              <span class="tl-date" style="color:#56a08f;">2021 – 2024</span>
               <span class="tl-arrow">▼</span>
             </span>
           </div>
@@ -948,7 +954,7 @@
       card.className = 'work-card';
       card.setAttribute('aria-label', '播放 ' + title);
       card.innerHTML =
-        '<img class="work-thumb" src="assets/works/' + id + '.jpg" alt="' + title + '" loading="lazy" decoding="async">' +
+        '<img class="work-thumb" src="assets/works/' + id + '.jpg" alt="' + title + '" decoding="async">' +
         '<span class="work-play" aria-hidden="true">▶</span>' +
         '<span class="work-title">' + title + '</span>';
       card.addEventListener('click', function () { openPlayer(id, title); });

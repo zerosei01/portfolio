@@ -918,13 +918,18 @@
     ['w26', '我的童年'], ['w27', '小川杠'], ['w28', '锈湖'], ['w29', '猗窝座'], ['w30', '再别冬都'], ['w31', '重力系眼镜男']
   ];
 
+  /* 媒体基础路径：GitHub Pages / jsDelivr 上自动走 CDN（国内访问快），本地/隧道用相对路径 */
+  const MEDIA_BASE = (location.hostname.includes('github.io') || location.hostname.includes('jsdelivr'))
+    ? 'https://cdn.jsdelivr.net/gh/zerosei01/portfolio@master'
+    : '';
+
   const worksGrid = document.getElementById('worksGrid');
   const modal = document.getElementById('playerModal');
   const playerVideo = document.getElementById('playerVideo');
   const playerTitle = document.getElementById('playerTitle');
 
   function openPlayer(id, title) {
-    playerVideo.src = 'assets/videos/' + id + '.mp4';
+    playerVideo.src = MEDIA_BASE + 'assets/videos/' + id + '.mp4';
     playerTitle.textContent = title;
     modal.hidden = false;
     document.body.style.overflow = 'hidden';
@@ -947,7 +952,7 @@
       card.className = 'work-card';
       card.setAttribute('aria-label', '播放 ' + title);
       card.innerHTML =
-        '<img class="work-thumb" src="assets/works/' + id + '.jpg" alt="' + title + '" loading="lazy" decoding="async">' +
+        '<img class="work-thumb" src="' + MEDIA_BASE + 'assets/works/' + id + '.jpg" alt="' + title + '" loading="lazy" decoding="async">' +
         '<span class="work-play" aria-hidden="true">▶</span>' +
         '<span class="work-title">' + title + '</span>';
       card.addEventListener('click', function () { openPlayer(id, title); });

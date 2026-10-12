@@ -395,9 +395,11 @@
       overflow: hidden;
       background: var(--bg-card);
       cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
       aspect-ratio: 9 / 16;
       transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
     }
+    .work-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     /* 老浏览器不支持 aspect-ratio 时给卡片固定高度 */
     @supports not (aspect-ratio: 1 / 1) {
       .work-card { height: 300px; }
@@ -416,7 +418,10 @@
     .work-card::after {
       content: '';
       position: absolute;
-      inset: auto 0 0 0;
+      top: auto;
+      right: 0;
+      bottom: 0;
+      left: 0;
       height: 45%;
       background: linear-gradient(to top, rgba(0, 0, 0, 0.78), transparent);
       pointer-events: none;
@@ -949,15 +954,19 @@
   if (worksGrid && modal) {
     WORKS.forEach(function (item) {
       const id = item[0], title = item[1];
-      const card = document.createElement('button');
-      card.type = 'button';
+const card = document.createElement('div');
       card.className = 'work-card';
+      card.setAttribute('role', 'button');
+      card.setAttribute('tabindex', '0');
       card.setAttribute('aria-label', '播放 ' + title);
       card.innerHTML =
         '<img class="work-thumb" src="assets/works/' + id + '.jpg" alt="' + title + '" decoding="async">' +
-        '<span class="work-play" aria-hidden="true">▶</span>' +
+        '<span class="work-play" aria-hidden="true">?</span>' +
         '<span class="work-title">' + title + '</span>';
       card.addEventListener('click', function () { openPlayer(id, title); });
+      card.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPlayer(id, title); }
+      });
       worksGrid.appendChild(card);
     });
 
